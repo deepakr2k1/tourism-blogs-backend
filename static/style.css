@@ -125,19 +125,37 @@ h3 {
 
 /* details styles */
 
+.title {
+    font-size: 1.3rem;
+    justify-content: space-between;
+    display: flex;
+}
+
+.title>div {
+    padding-top: 10px;
+}
+
+.icons {
+    margin: 4px;
+    padding: 4px;
+    transition: 300ms;
+}
+
+.icons:hover {
+    cursor: pointer;
+    color: crimson;
+    transform: scale(1.2);
+    transition: 300ms;
+}
+
 .details {
     position: relative;
 }
 
-.delete {
-    position: absolute;
-    top: 0;
-    right: 0;
-    padding: 8px;
-}
-
-.delete:hover {
-    cursor: pointer;
+.dates {
+    color: #777;
+    font-weight: 300;
+    font-size: 0.9rem;
 }
 
 
