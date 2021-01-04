@@ -8,6 +8,11 @@ body {
     max-width: 1200px;
 }
 
+
+/* * {
+    border: 1px solid red;
+} */
+
 p,
 h1,
 h2,
@@ -24,12 +29,25 @@ ul {
 /* nav & footer styles */
 
 nav {
-    display: flex;
-    justify-content: space-between;
     margin-bottom: 60px;
     padding-bottom: 10px;
     border-bottom: 1px solid #ddd;
     text-transform: uppercase;
+}
+
+nav>div {
+    display: flex;
+    justify-content: space-between;
+}
+
+nav h1 {
+    display: inline;
+    font-size: 2.8em;
+    color: crimson;
+}
+
+nav>div>div {
+    display: inline;
 }
 
 nav ul {
@@ -41,11 +59,6 @@ nav ul {
 nav li {
     list-style-type: none;
     margin-left: 20px;
-}
-
-nav h1 {
-    font-size: 2.8em;
-    color: crimson;
 }
 
 nav p,
@@ -64,6 +77,32 @@ nav li>a:hover {
     color: white;
     background-color: crimson;
 }
+
+nav span {
+    margin: 4px;
+    text-transform: none;
+    font-size: 0.9rem;
+}
+
+#log {
+    margin-top: 10px;
+    margin-bottom: 50px;
+    font-size: 1rem;
+    color: white;
+    background: crimson;
+    border-radius: 4px;
+    padding: 5px 10px 5px 10px;
+    border: none;
+    outline: none;
+}
+
+#log:hover {
+    cursor: pointer;
+    background: rgb(187, 13, 48);
+}
+
+
+/* Footer */
 
 footer {
     position: fixed;

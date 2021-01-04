@@ -3,11 +3,23 @@
         <a href="/">
             <h1>Tourist's Blogs</h1>
         </a>
-        <p>A website to read & create tourism Blogs.</p>
+        <div>
+            <% if(user.email == null || user.email == "") { %>
+                <a href="/user"><button  id="log">Login</button></a>
+                <% } else { %>
+                    <span> Welcome,&ensp;<%= user.name %> </span>
+                    <a href="/logout"><button  id="log">Logout</button></a>
+                    <% } %>
+        </div>
     </div>
-    <ul>
-        <li><a href="/">Blogs</a></li>
-        <li><a href="/about">About</a></li>
-        <li><a href="/blogs/create">Create</a></li>
-    </ul>
+    <div>
+        <p>A website to read & create tourism Blogs.</p>
+        <div>
+            <ul>
+                <li><a href="/">Blogs</a></li>
+                <li><a href="/about">About</a></li>
+                <li><a href="/blogs/create">Create</a></li>
+            </ul>
+        </div>
+    </div>
 </nav>

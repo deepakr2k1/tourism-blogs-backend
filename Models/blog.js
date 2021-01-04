@@ -18,8 +18,12 @@ const blogSchema = new schema({
     date: {
         type: Date,
         required: true,
+    },
+    author: {
+        type: String,
+        required: true,
     }
-}, {timestamp: true})
+}, { timestamp: true })
 
 const Blog = mongoose.model('Blogs', blogSchema);
 module.exports = Blog;
