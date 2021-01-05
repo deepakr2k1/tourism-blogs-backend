@@ -19,7 +19,7 @@ body {
     max-width: 1200px;
     min-height: 100vh;
     margin: 0 auto;
-    padding: 0px 20px 0 20px;
+    padding: 0px 20px 0px 20px;
     font-family: 'Architects Daughter', cursive;
 }
 
@@ -165,6 +165,10 @@ h3 {
 
 /* index styles */
 
+#_index {
+    padding-bottom: 1px;
+}
+
 .blogs-content a {
     padding: 8px;
     padding-right: 24px;
@@ -265,7 +269,7 @@ textarea {
 }
 
 .create-blog button {
-    margin-top: 20px;
+    margin: 10px;
     border: 1px solid var(--primary);
     outline: none;
     border-radius: 6px;
@@ -288,4 +292,34 @@ textarea {
 
 .not-found-content>h1 {
     margin-bottom: 12px;
+}
+
+
+/* width */
+
+::-webkit-scrollbar {
+    width: 6px;
+}
+
+
+/* Track */
+
+::-webkit-scrollbar-track {
+    background: none;
+    border-radius: 3px;
+}
+
+
+/* Handle */
+
+::-webkit-scrollbar-thumb {
+    background: var(--primary);
+    border-radius: 3px;
+}
+
+
+/* Handle on hover */
+
+::-webkit-scrollbar-thumb:hover {
+    background: rgb(112, 18, 37);
 }
