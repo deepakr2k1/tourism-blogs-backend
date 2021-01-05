@@ -15,7 +15,7 @@ body {
     background-position: center;
     background-size: cover;
     background-blend-mode: lighten;
-    backdrop-filter: blur(5px);
+    backdrop-filter: blur(3px);
     max-width: 1200px;
     min-height: 100vh;
     margin: 0 auto;

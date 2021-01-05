@@ -31,22 +31,20 @@
                 </div>
             </div>
 
-            <%- include("../partials/footer.ejs") %>
+            <script>
+                const trashcan = document.getElementById('trash');
 
-                <script>
-                    const trashcan = document.getElementById('trash');
+                trashcan.addEventListener('click', (e) => {
+                    const endpoint = `/blogs/${trashcan.dataset.doc}`;
 
-                    trashcan.addEventListener('click', (e) => {
-                        const endpoint = `/blogs/${trashcan.dataset.doc}`;
-
-                        fetch(endpoint, {
-                                method: 'DELETE',
-                            })
-                            .then((response) => response.json())
-                            .then((data) => window.location.href = data.redirect)
-                            .catch((err) => console.log(err));
-                    });
-                </script>
+                    fetch(endpoint, {
+                            method: 'DELETE',
+                        })
+                        .then((response) => response.json())
+                        .then((data) => window.location.href = data.redirect)
+                        .catch((err) => console.log(err));
+                });
+            </script>
     </body>
 
 </html>
