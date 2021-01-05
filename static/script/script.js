@@ -1,12 +1,12 @@
 function tab0() {
     window.sessionStorage.setItem("tab", "0");
-    document.getElementById("pills-home-tab").style.background = "crimson";
+    document.getElementById("pills-home-tab").style.background = "rgb(136, 26, 48)";
     document.getElementById("pills-home-tab").style.color = "white";
     document.getElementById("pills-home-tab").style.borderTopLeftRadius = "8px";
     document.getElementById("pills-home-tab").style.borderTopRightRadius = "8px";
     document.getElementById("pills-profile-tab").style.background = "white";
     document.getElementById("pills-profile-tab").style.color = "black";
-    document.getElementById("pills-profile-tab").style.borderBottomColor = "crimson";
+    document.getElementById("pills-profile-tab").style.borderBottomColor = "rgb(136, 26, 48)";
     var element = document.getElementById("pills-home");
     element.classList.add("active");
     element.classList.add("show");
@@ -17,13 +17,13 @@ function tab0() {
 
 function tab1() {
     window.sessionStorage.setItem("tab", "1");
-    document.getElementById("pills-profile-tab").style.background = "crimson";
+    document.getElementById("pills-profile-tab").style.background = "rgb(136, 26, 48)";
     document.getElementById("pills-profile-tab").style.color = "white";
     document.getElementById("pills-profile-tab").style.borderTopLeftRadius = "8px";
     document.getElementById("pills-profile-tab").style.borderTopRightRadius = "8px";
     document.getElementById("pills-home-tab").style.background = "white";
     document.getElementById("pills-home-tab").style.color = "black";
-    document.getElementById("pills-home-tab").style.borderBottomColor = "crimson";
+    document.getElementById("pills-home-tab").style.borderBottomColor = "rgb(136, 26, 48)";
     var element = document.getElementById("pills-profile");
     element.classList.add("active");
     element.classList.add("show");

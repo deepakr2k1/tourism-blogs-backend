@@ -38,11 +38,12 @@ const blog_create_get = ((req, res) => {
         'name': req.cookies["name"],
         'email': req.cookies["email"],
     }
-    if (user.email == null) res.redirect('/user');
+    if (user.email == null || req.cookies["email"] == "") res.redirect('/user');
     else res.render('blogs/create', { user: user, title: 'Create New Blog' });
 })
 
 const blog_create_post = ((req, res) => {
+    if (req.cookies["email"] == null || req.cookies["email"] == "") res.redirect('/user');
     const blog = new Blog(req.body);
     blog.date = new Date();
     blog.author = req.cookies["email"];
