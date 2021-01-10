@@ -20,6 +20,7 @@
         "morgan": "^1.10.0",
         "nod": "^0.2.0",
         "node": "^15.4.0",
-        "node-localstorage": "^2.1.6"
+        "node-localstorage": "^2.1.6",
+        "nodemon": "^2.0.7"
     }
 }
