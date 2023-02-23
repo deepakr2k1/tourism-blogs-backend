@@ -226,6 +226,12 @@ h3 {
     position: relative;
 }
 
+.author {
+    float: right;
+    font-style: italic;
+    margin-top: 60px;
+}
+
 .dates {
     color: var(--col3);
     font-weight: 300;
