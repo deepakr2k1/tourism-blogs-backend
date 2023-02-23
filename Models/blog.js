@@ -20,10 +20,11 @@ const blogSchema = new schema({
         required: true,
     },
     author: {
-        type: String,
+        type: schema.Types.ObjectId,
+        ref: 'User',
         required: true,
     }
-}, { timestamp: true })
+}, { timestamp: true });
 
 const Blog = mongoose.model('Blogs', blogSchema);
 module.exports = Blog;
