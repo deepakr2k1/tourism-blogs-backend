@@ -1,23 +1,17 @@
-// blog_index, blog_details, blog_create_get, blog_create_post, blog_delete
-
 const Blog = require('../Models/blog');
 const ObjectId = require('mongodb').ObjectId;
 
-const blog_index = ((req, res) => {
+const getAllBlogs = ((req, res) => {
     Blog.find().sort({ date: -1 })
-        .then(result => {
-            var user = {
-                'name': req.cookies["name"],
-                'email': req.cookies["email"],
-            };
-            res.render('blogs/index', { user: user, title: 'Blogs', blogs: result });
+        .then(blogs => {
+            res.status(200).send({ blogs });
         })
         .catch(err => {
             console.log(err);
         });
 });
 
-const blog_details = ((req, res) => {
+const getBlogById = ((req, res) => {
     var user = {
         'name': req.cookies["name"],
         'email': req.cookies["email"],
@@ -25,12 +19,14 @@ const blog_details = ((req, res) => {
     const id = new ObjectId(req.params.id);
 
     Blog.findById(id).populate('author')
-        .then(result => {
-            res.render('blogs/details', { user: user, 'blog': result, title: 'Blog Details' });
+        .then(blog => {
+            blog.id = blog._id;
+            blog.author = blog.author.name;
+            delete blog["_id"];
+            console.log(blog);
+            return res.status(200).send({ blog });
         })
         .catch((err) => {
-            res.render('404', { user: user, title: 'Not Found' });
-            console.log(err);
         });
 });
 
@@ -113,8 +109,8 @@ const blog_delete = ((req, res) => {
 });
 
 module.exports = {
-    'blog_index': blog_index,
-    'blog_details': blog_details,
+    'getAllBlogs': getAllBlogs,
+    'getBlogById': getBlogById,
     'blog_create_get': blog_create_get,
     'blog_create_post': blog_create_post,
     'blog_edit_get': blog_edit_get,
