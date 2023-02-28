@@ -2,19 +2,19 @@
     "name": "tourists-blogs-website",
     "version": "1.0.0",
     "description": "",
-    "main": "server.js",
+    "main": "app.js",
     "scripts": {
-        "app": "node server.js",
-        "test": "nodemon server.js"
+        "app": "node app.js",
+        "test": "nodemon app.js"
     },
     "author": "",
     "license": "ISC",
     "dependencies": {
         "bcrypt": "^5.0.0",
-        "body-parser": "^1.19.0",
         "bootstrap-icons": "^1.2.2",
         "cookie-parser": "^1.4.5",
         "cors": "^2.8.5",
+        "dotenv": "^16.0.3",
         "ejs": "^3.1.5",
         "express": "^4.17.1",
         "lodash": "^4.17.20",

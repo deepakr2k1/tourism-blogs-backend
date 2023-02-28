@@ -4,7 +4,6 @@ const app = express();
 const port = process.env.PORT || 8000;
 const mongoose = require('mongoose');
 const cors = require('cors');
-const bodyParser = require('body-parser');
 const cookieParser = require("cookie-parser");
 
 const dbURI = 'mongodb+srv://deepakrathore:pass123@cluster0.bkgzn.mongodb.net/tourists-blogs?retryWrites=true&w=majority';
@@ -14,11 +13,11 @@ mongoose.connect(dbURI, { useNewUrlParser: true, useUnifiedTopology: true })
 
 app.use(cors({ origin: "http://localhost:3000" }));
 app.use(cookieParser());
-app.use(express.static('static'));
+app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(morgan('dev'));
 
-app.use('/user', require('./routes/userRoutes'));
+// app.use('/user', require('./routes/userRoutes'));
 app.use('/blog', require('./routes/blogRoutes'));
 // app.get('/about', (req, res) => {
 //     var user = {

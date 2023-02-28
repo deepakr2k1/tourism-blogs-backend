@@ -9,14 +9,9 @@ const blogSchema = new schema({
     },
     snippet: {
         type: String,
-        required: true,
     },
-    body: {
+    content: {
         type: String,
-        required: true,
-    },
-    date: {
-        type: Date,
         required: true,
     },
     author: {
@@ -24,7 +19,12 @@ const blogSchema = new schema({
         ref: 'User',
         required: true,
     }
-}, { timestamp: true });
+}, {
+    timestamps: {
+        createdAt: 'created_at',
+        updatedAt: 'updated_at'
+    }
+}).set('validateBeforeSave', true);;
 
-const Blog = mongoose.model('Blogs', blogSchema);
-module.exports = Blog;
+const BlogModel = mongoose.model('Blogs', blogSchema);
+module.exports = BlogModel;
