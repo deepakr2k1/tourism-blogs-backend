@@ -1,6 +1,10 @@
-const BlogModel = require('../Models/blog');
-const internalServerError = 'Internal Server Error';
-const unauthorized = `OOP! You don't access to perform this action.`;
+const BlogModel = require('../models/blog');
+const INTERNAL_SERVER_ERROR = {
+    error: 'INTERNAL_SERVER_ERROR',
+    message: 'OOPS! Something went wrong!'
+};
+const UNAUTHORIZED = `OOP! You don't access to perform this action.`;
+const MAX_SNIPPET_LENGTH = 100;
 
 const getAllBlogs = (async (req, res) => {
     try {
@@ -8,7 +12,7 @@ const getAllBlogs = (async (req, res) => {
         res.status(200).send({ blogs });
     } catch (err) {
         console.error(err);
-        return res.status(500).send({ err, msg: internalServerError });
+        return res.status(500).send(INTERNAL_SERVER_ERROR);
     }
 });
 
@@ -19,7 +23,7 @@ const getBlogById = (async (req, res) => {
         res.status(200).send(blog);
     } catch (err) {
         console.error(err);
-        return res.status(500).send({ err, msg: internalServerError });
+        return res.status(500).send(INTERNAL_SERVER_ERROR);
     }
 });
 
@@ -27,8 +31,8 @@ const createBlog = (async (req, res) => {
     try {
         const blog = new BlogModel(req.body);
         if (blog.content && !blog.snippet) {
-            if (blog.content.length > 50) {
-                blog.snippet = `${blog.content.substring(0, 50)}...`;
+            if (blog.content.length > MAX_SNIPPET_LENGTH) {
+                blog.snippet = `${blog.content.substring(0, MAX_SNIPPET_LENGTH - 3)}...`;
             } else {
                 blog.snippet = blog.content;
             }
@@ -37,7 +41,7 @@ const createBlog = (async (req, res) => {
         res.status(201).end();
     } catch (err) {
         console.error(err);
-        return res.status(500).send({ err, msg: internalServerError });
+        return res.status(500).send(INTERNAL_SERVER_ERROR);
     }
 });
 
@@ -46,8 +50,8 @@ const updateBlog = (async (req, res) => {
         const id = req.params.id;
         const blog = new BlogModel(req.body);
         if (blog.content && !blog.snippet) {
-            if (blog.content.length > 50) {
-                blog.snippet = `${blog.content.substring(0, 50)}...`;
+            if (blog.content.length > MAX_SNIPPET_LENGTH) {
+                blog.snippet = `${blog.content.substring(0, MAX_SNIPPET_LENGTH - 3)}...`;
             } else {
                 blog.snippet = blog.content;
             }
@@ -56,7 +60,7 @@ const updateBlog = (async (req, res) => {
         res.status(201).end();
     } catch (err) {
         console.error(err);
-        return res.status(500).send({ err, msg: internalServerError });
+        return res.status(500).send(INTERNAL_SERVER_ERROR);
     }
 });
 
@@ -71,7 +75,7 @@ const deleteBlog = (async (req, res) => {
         res.status(204).end();
     } catch (err) {
         console.error(err);
-        return res.status(500).send({ err, msg: internalServerError });
+        return res.status(500).send(INTERNAL_SERVER_ERROR);
     }
 });
 

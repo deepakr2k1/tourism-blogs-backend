@@ -1,17 +1,19 @@
 const mongoose = require('mongoose');
 const schema = mongoose.Schema;
-// Schema define structure
 
 const blogSchema = new schema({
     title: {
         type: String,
+        max: 50,
         required: true,
     },
     snippet: {
         type: String,
+        max: 200,
     },
     content: {
         type: String,
+        max: 2000,
         required: true,
     },
     author: {
@@ -26,5 +28,4 @@ const blogSchema = new schema({
     }
 }).set('validateBeforeSave', true);;
 
-const BlogModel = mongoose.model('Blogs', blogSchema);
-module.exports = BlogModel;
+module.exports = mongoose.model('Blogs', blogSchema);
