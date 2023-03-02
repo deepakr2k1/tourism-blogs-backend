@@ -67,6 +67,7 @@ const verifyEmail = (async (req, res) => {
         let user = await UserModel.updateOne({ email: otp.email }, { status: 'VERIFIED' });
         await OtpModel.deleteOne({ email: otp.email });
 
+        user = await UserModel.findOne({ email: otp.email });
         user = _.pick(user, ['id', 'name', 'email']);
         let accessToken = await signToken(user);
         res.cookie('accessToken', accessToken, { maxAge: cookieExpiration, httpOnly: true });

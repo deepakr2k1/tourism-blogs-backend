@@ -1,3 +1,4 @@
+const _ = require('lodash');
 const ObjectId = require('mongodb').ObjectId;
 const BlogModel = require('../models/blog');
 
@@ -46,8 +47,11 @@ const createBlog = (async (req, res) => {
 
 const updateBlog = (async (req, res) => {
     try {
-        let id = req.params.id;
-        let blog = new BlogModel(req.body);
+        let userId = req.user.id;
+        let blogId = req.params.id;
+        let blog = await BlogModel.findOne({ _id: blogId });
+        if (userId != (blog && blog.author)) return res.status(401).send({ msg: `OOP! You don't access to perform this action.` });
+        blog = new BlogModel(req.body);
         if (blog.content && !blog.snippet) {
             if (blog.content.length > MAX_SNIPPET_LENGTH) {
                 blog.snippet = `${blog.content.substring(0, MAX_SNIPPET_LENGTH - 3)}...`;
@@ -55,7 +59,8 @@ const updateBlog = (async (req, res) => {
                 blog.snippet = blog.content;
             }
         }
-        await BlogModel.updateOne({ _id: id }, blog);
+        blog = _.pick(blog, ['title', 'content', 'snippet']);
+        await BlogModel.updateOne({ _id: blogId }, blog);
         res.status(201).end();
     } catch (err) {
         console.error(err);
@@ -65,8 +70,8 @@ const updateBlog = (async (req, res) => {
 
 const deleteBlog = (async (req, res) => {
     try {
-        let blogId = req.params.id;
         let userId = req.user.id;
+        let blogId = req.params.id;
         let blog = await BlogModel.findOne({ _id: blogId });
         if (userId != blog.author) return res.status(401).send({ msg: `OOP! You don't access to perform this action.` });
         await BlogModel.deleteOne({ _id: blogId, author: userId });
