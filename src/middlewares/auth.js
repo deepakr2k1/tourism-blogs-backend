@@ -1,4 +1,4 @@
-const { decodeToken } = require('../helpers/jwt');
+const { decodeToken } = require('../utils/jwt');
 const jwt = require('jsonwebtoken');
 const _ = require('lodash');
 
@@ -7,11 +7,11 @@ const accessExpiration = process.env.ACCESS_TOKEN_EXPIRATION;
 
 const auth = async (req, res, next) => {
     try {
-        const accessToken = req.cookies && req.cookies.accessToken;
+        let accessToken = req.cookies && req.cookies.accessToken;
         if (!accessToken) {
             res.status(403).send({ err, message: 'No Access Token' });
         }
-        const decoded = await decodeToken(accessToken);
+        let decoded = await decodeToken(accessToken);
         req.user = _.pick(decoded, ['id', 'name', 'email']);
         next();
     } catch (err) {

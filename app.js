@@ -1,5 +1,4 @@
 require('dotenv').config();
-require('./src/mails/transporter');
 const express = require('express');
 const morgan = require('morgan');
 const app = express();

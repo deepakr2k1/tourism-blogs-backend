@@ -19,4 +19,16 @@ transporter.verify((err) => {
     }
 });
 
-module.export = transporter;
+const sendMail = (option) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            await transporter.sendMail(option);
+            resolve();
+        } catch (err) {
+            console.error(err);
+            reject(err);
+        }
+    });
+};
+
+module.exports = sendMail;

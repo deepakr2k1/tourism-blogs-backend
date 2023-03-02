@@ -1,14 +1,12 @@
+const ObjectId = require('mongodb').ObjectId;
 const BlogModel = require('../models/blog');
-const INTERNAL_SERVER_ERROR = {
-    error: 'INTERNAL_SERVER_ERROR',
-    message: 'OOPS! Something went wrong!'
-};
-const UNAUTHORIZED = `OOP! You don't access to perform this action.`;
-const MAX_SNIPPET_LENGTH = 100;
+
+const { MAX_SNIPPET_LENGTH } = require('../../config');
+const { INTERNAL_SERVER_ERROR } = require('../utils/statusCodeResponses');
 
 const getAllBlogs = (async (req, res) => {
     try {
-        const blogs = await BlogModel.find().sort({ date: -1 });
+        let blogs = await BlogModel.find().sort({ date: -1 });
         res.status(200).send({ blogs });
     } catch (err) {
         console.error(err);
@@ -18,8 +16,8 @@ const getAllBlogs = (async (req, res) => {
 
 const getBlogById = (async (req, res) => {
     try {
-        const id = req.params.id;
-        const blog = await BlogModel.findOne({ _id: id });
+        let id = req.params.id;
+        let blog = await BlogModel.findOne({ _id: id });
         res.status(200).send(blog);
     } catch (err) {
         console.error(err);
@@ -29,7 +27,8 @@ const getBlogById = (async (req, res) => {
 
 const createBlog = (async (req, res) => {
     try {
-        const blog = new BlogModel(req.body);
+        let blog = new BlogModel(req.body);
+        blog.author = ObjectId(req.user.id);
         if (blog.content && !blog.snippet) {
             if (blog.content.length > MAX_SNIPPET_LENGTH) {
                 blog.snippet = `${blog.content.substring(0, MAX_SNIPPET_LENGTH - 3)}...`;
@@ -47,8 +46,8 @@ const createBlog = (async (req, res) => {
 
 const updateBlog = (async (req, res) => {
     try {
-        const id = req.params.id;
-        const blog = new BlogModel(req.body);
+        let id = req.params.id;
+        let blog = new BlogModel(req.body);
         if (blog.content && !blog.snippet) {
             if (blog.content.length > MAX_SNIPPET_LENGTH) {
                 blog.snippet = `${blog.content.substring(0, MAX_SNIPPET_LENGTH - 3)}...`;
@@ -66,12 +65,11 @@ const updateBlog = (async (req, res) => {
 
 const deleteBlog = (async (req, res) => {
     try {
-        const id = req.params.id;
-        // todo: update userId
-        const userId = '63f3e654d006e60ef040b51a';
-        const blog = await BlogModel.findOne({ _id: id });
-        if (userId != blog.author) return res.status(401).send({ msg: unauthorized });
-        await BlogModel.deleteOne({ _id: id, author: userId });
+        let blogId = req.params.id;
+        let userId = req.user.id;
+        let blog = await BlogModel.findOne({ _id: blogId });
+        if (userId != blog.author) return res.status(401).send({ msg: `OOP! You don't access to perform this action.` });
+        await BlogModel.deleteOne({ _id: blogId, author: userId });
         res.status(204).end();
     } catch (err) {
         console.error(err);

@@ -1,20 +1,19 @@
 const path = require('path');
 const ejs = require('ejs');
-const transporter = require('./transporter');
+const sendMail = require('./transporter');
 
 const sendVerificationEmail = ({ name, email, code }) => {
     return new Promise(async (resolve, reject) => {
         try {
-            const templatePath = path.join(__dirname, '../templates/emailVerification.ejs');
-            const template = await ejs.renderFile(templatePath, { name, email, code });
-            const mailOptions = {
+            let templatePath = path.join(__dirname, '../templates/emailVerification.ejs');
+            let template = await ejs.renderFile(templatePath, { code });
+            let mailOptions = {
                 from: 'Tourism Blogs',
-                to: data.email,
+                to: email,
                 subject: `Welcome ${name}, Please verify your email`,
                 html: template
             };
-            await transporter.sendMail(mailOptions);
-            console.info('SENT MAIL');
+            await sendMail(mailOptions);
             resolve();
         } catch (err) {
             console.error(err);
