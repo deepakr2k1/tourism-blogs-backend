@@ -73,7 +73,7 @@ const deleteBlog = (async (req, res) => {
         let userId = req.user.id;
         let blogId = req.params.id;
         let blog = await BlogModel.findOne({ _id: blogId });
-        if (userId != blog.author) return res.status(401).send({ msg: `OOP! You don't access to perform this action.` });
+        if (userId != (blog && blog.author)) return res.status(401).send({ msg: `OOP! You don't access to perform this action.` });
         await BlogModel.deleteOne({ _id: blogId, author: userId });
         res.status(204).end();
     } catch (err) {
