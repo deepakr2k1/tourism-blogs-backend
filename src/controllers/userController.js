@@ -43,7 +43,7 @@ const register = (async (req, res) => {
             await UserModel.create(user);
         } else if (_user.status == 'UNVERIFIED') {
             user.password = await bcrypt.hash(user.password, HASH_SALT);
-            await UserModel.update({ id: _user.id }, user);
+            await UserModel.updateOne({ id: _user.id }, user);
         } else {
             return res.status(400).send({ message: 'Email already registered' });
         }

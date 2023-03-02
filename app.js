@@ -21,6 +21,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(cookieParser());
 app.use(morgan('dev'));
+app.use(express.static("public"));
 
 // Middlewares
 const auth = require('./src/middlewares/auth');
