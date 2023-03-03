@@ -1,6 +1,6 @@
 const bcrypt = require('bcrypt');
 const _ = require('lodash');
-const { signToken } = require('../utils/jwt');
+const { signToken, decodeToken } = require('../utils/jwt');
 const UserModel = require('../models/user');
 const OtpModel = require('../models/otp');
 const emailVerification = require('../mails/emailVerification');
@@ -91,7 +91,23 @@ const login = (async (req, res) => {
         let _user = _.pick(user, ['id', 'name', 'email']);
         let accessToken = await signToken(_user);
         res.cookie('accessToken', accessToken, { maxAge: cookieExpiration, httpOnly: true });
-        res.status(202).send({ message: 'Logged in Successfully' });
+        res.status(202).send({ user: _user });
+    } catch (err) {
+        console.error(err);
+        return res.status(500).send(INTERNAL_SERVER_ERROR);
+    }
+});
+
+const profile = (async (req, res) => {
+    try {
+        let accessToken = req.cookies && req.cookies.accessToken;
+        if (!accessToken && typeof (accessToken) == 'undefined') {
+            res.status(403).send({ err, message: 'No Access Token' });
+        }
+        let decoded = await decodeToken(accessToken);
+        user = _.pick(decoded, ['id', 'name', 'email']);
+        res.cookie('accessToken', accessToken, { maxAge: cookieExpiration, httpOnly: true });
+        res.status(202).send({ user });
     } catch (err) {
         console.error(err);
         return res.status(500).send(INTERNAL_SERVER_ERROR);
@@ -102,4 +118,5 @@ module.exports = {
     register,
     verifyEmail,
     login,
+    profile
 };
