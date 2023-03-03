@@ -73,7 +73,7 @@ const verifyEmail = (async (req, res) => {
         user = _.pick(user, ['id', 'name', 'email']);
         let accessToken = await signToken(user);
         res.cookie('accessToken', accessToken, { maxAge: cookieExpiration, httpOnly: true });
-        res.status(202).send({ message: 'Account setup completed' });
+        res.status(202).send({ user });
     } catch (err) {
         console.error(err);
         return res.status(500).send(INTERNAL_SERVER_ERROR);
