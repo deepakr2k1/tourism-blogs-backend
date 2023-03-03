@@ -57,7 +57,9 @@ const register = (async (req, res) => {
 
 const verifyEmail = (async (req, res) => {
     try {
-        let { email, code } = req.query;
+        let { email, code } = req.body;
+        email = email.toLowerCase();
+        code = parseInt(code);
         let otp = await OtpModel.findOne({ email: email });
         if (otp == null) {
             return res.status(400).send({ message: 'OTP not found' });
@@ -83,15 +85,24 @@ const login = (async (req, res) => {
         let { email, password } = req.body;
         let user = await UserModel.findOne({ email: email });
         if (!user) {
-            res.status(400).send({ message: 'User not found' });
+            return res.status(400).send({ message: 'User not found' });
         }
         if (!await bcrypt.compare(password, user.password)) {
-            res.status(400).send({ message: 'Wrong password' });
+            return res.status(400).send({ message: 'Wrong password' });
         }
         let _user = _.pick(user, ['id', 'name', 'email']);
         let accessToken = await signToken(_user);
         res.cookie('accessToken', accessToken, { maxAge: cookieExpiration, httpOnly: true });
         res.status(202).send({ user: _user });
+    } catch (err) {
+        console.error(err);
+        return res.status(500).send(INTERNAL_SERVER_ERROR);
+    }
+});
+
+const logout = (async (req, res) => {
+    try {
+        res.clearCookie('accessToken').send({});
     } catch (err) {
         console.error(err);
         return res.status(500).send(INTERNAL_SERVER_ERROR);
@@ -118,5 +129,6 @@ module.exports = {
     register,
     verifyEmail,
     login,
-    profile
+    profile,
+    logout
 };
