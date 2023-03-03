@@ -23,12 +23,9 @@ app.use(cookieParser());
 app.use(morgan('dev'));
 app.use(express.static("public"));
 
-// Middlewares
-const auth = require('./src/middlewares/auth');
-
 // Routes
 app.use('/user', require('./src/routes/userRoutes'));
-app.use('/blog', auth, require('./src/routes/blogRoutes'));
+app.use('/blog', require('./src/routes/blogRoutes'));
 
 // Server
 app.listen(port, console.info(`Server is listening on port ${port}`));

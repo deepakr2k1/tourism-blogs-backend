@@ -18,7 +18,7 @@ const getAllBlogs = (async (req, res) => {
 const getBlogById = (async (req, res) => {
     try {
         let id = req.params.id;
-        let blog = await BlogModel.findOne({ _id: id });
+        let blog = await BlogModel.findOne({ _id: id }).populate('author');
         res.status(200).send(blog);
     } catch (err) {
         console.error(err);
