@@ -8,7 +8,7 @@ const cookieParser = require("cookie-parser");
 
 const port = process.env.PORT;
 const dbURI = process.env.DB_URI;
-const clientHost = process.env.CLIENT_HOST;
+const { CORS_ORIGIN_URLS, COOKIE_OPTIONS } = require('./config');
 
 // Connect to MongoDB
 mongoose.connect(dbURI, { useNewUrlParser: true, useUnifiedTopology: true })
@@ -16,10 +16,10 @@ mongoose.connect(dbURI, { useNewUrlParser: true, useUnifiedTopology: true })
     .catch((err) => console.info(err));
 
 // Middlewares
-app.use(cors({ credentials: true, origin: clientHost }));
+app.use(cors({ origin: CORS_ORIGIN_URLS, credentials: true }));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-app.use(cookieParser());
+app.use(cookieParser(COOKIE_OPTIONS));
 app.use(morgan('dev'));
 app.use(express.static("public"));
 

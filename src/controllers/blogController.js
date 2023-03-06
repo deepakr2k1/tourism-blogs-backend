@@ -7,7 +7,7 @@ const { INTERNAL_SERVER_ERROR } = require('../utils/statusCodeResponses');
 
 const getAllBlogs = (async (req, res) => {
     try {
-        let blogs = await BlogModel.find().sort({ date: -1 });
+        let blogs = await BlogModel.find().sort({ updated_at: -1 });
         res.status(200).send({ blogs });
     } catch (err) {
         console.error(err);
