@@ -60,7 +60,7 @@ const verifyEmail = (async (req, res) => {
         let { email, code } = req.body;
         email = email.toLowerCase();
         code = parseInt(code);
-        let otp = await OtpModel.findOne({ email: email });
+        let otp = await OtpModel.findOne({ email });
         if (otp == null) {
             return res.status(400).send({ message: 'OTP not found' });
         } else if (otp.code != code) {

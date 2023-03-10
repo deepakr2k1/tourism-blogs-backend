@@ -4,10 +4,15 @@ const BlogModel = require('../models/blog');
 
 const { MAX_SNIPPET_LENGTH } = require('../../config');
 const { INTERNAL_SERVER_ERROR } = require('../utils/statusCodeResponses');
+const { PAGE_SIZE } = require('../utils/constants');
 
 const getAllBlogs = (async (req, res) => {
     try {
-        let blogs = await BlogModel.find().sort({ updated_at: -1 });
+        let page = req.query.page ? parseInt(req.query.page) : 0;
+        let blogs = await BlogModel.find({})
+            .limit(PAGE_SIZE)
+            .skip(PAGE_SIZE * page)
+            .sort({ updated_at: -1 });
         res.status(200).send({ blogs });
     } catch (err) {
         console.error(err);
