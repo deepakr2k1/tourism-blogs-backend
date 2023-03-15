@@ -1,4 +1,5 @@
-const nodemailer = require('nodemailer');
+import nodemailer from 'nodemailer';
+import mailOptionsInterface from '../interfaces/mailOptions.interface'
 const smtpService = process.env.SMTP_SERVICE;
 const smtpUser = process.env.SMTP_USER;
 const smtpPass = process.env.SMTP_PASSWORD;
@@ -19,11 +20,11 @@ transporter.verify((err) => {
     }
 });
 
-const sendMail = (option) => {
+const sendMail = (option: mailOptionsInterface) => {
     return new Promise(async (resolve, reject) => {
         try {
             await transporter.sendMail(option);
-            resolve();
+            resolve(null);
         } catch (err) {
             console.error(err);
             reject(err);
@@ -31,4 +32,4 @@ const sendMail = (option) => {
     });
 };
 
-module.exports = sendMail;
+export default sendMail;

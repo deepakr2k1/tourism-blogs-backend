@@ -1,7 +1,7 @@
-const mongoose = require('mongoose');
-const schema = mongoose.Schema;
+import mongoose from 'mongoose';
+import blogInterface from '../interfaces/blog.interface';
 
-const blogSchema = new schema({
+const blogSchema = new mongoose.Schema<blogInterface>({
     title: {
         type: String,
         max: 50,
@@ -17,7 +17,7 @@ const blogSchema = new schema({
         required: true,
     },
     author: {
-        type: schema.Types.ObjectId,
+        type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
         required: true,
     }
@@ -28,4 +28,4 @@ const blogSchema = new schema({
     }
 }).set('validateBeforeSave', true);;
 
-module.exports = mongoose.model('Blogs', blogSchema);
+export default mongoose.model('Blogs', blogSchema);

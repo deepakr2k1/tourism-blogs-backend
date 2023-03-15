@@ -1,6 +1,7 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
+import userInterface from '../interfaces/user.interface';
 
-const user = new mongoose.Schema({
+const userSchema = new mongoose.Schema<userInterface>({
     name: {
         type: String,
         max: 50,
@@ -29,4 +30,4 @@ const user = new mongoose.Schema({
     }
 }).set('validateBeforeSave', true);
 
-module.exports = mongoose.model('User', user);
+export default mongoose.model('User', userSchema);

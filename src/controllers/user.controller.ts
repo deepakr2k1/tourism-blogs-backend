@@ -1,12 +1,15 @@
-const bcrypt = require('bcrypt');
-const _ = require('lodash');
-const { signToken, decodeToken } = require('../utils/jwt');
-const UserModel = require('../models/user');
-const OtpModel = require('../models/otp');
-const emailVerification = require('../mails/emailVerification');
+import UserModel from '../models/user.model';
+import OtpModel from '../models/otp.model';
+import bcrypt from 'bcrypt';
+import * as _ from 'lodash';
+
+import {Req, Res, Next} from '../interfaces/global.interface'
+
+import { signToken, decodeToken } from '../utils/jwt';
+import emailVerification from '../mails/emailVerification';
 
 const cookieExpiration = process.env.COOKIE_EXPIRATION;
-const { HASH_SALT } = require('../../config');
+const { HASH_SALT } = require('../config');
 const { SEND_CODE_MIN, SEND_CODE_MAX } = require('../utils/constants');
 const { INTERNAL_SERVER_ERROR } = require('../utils/statusCodeResponses');
 
@@ -14,7 +17,7 @@ const getRandomNumber = () => {
     return Math.floor(Math.random() * (SEND_CODE_MAX - SEND_CODE_MIN + 1)) + SEND_CODE_MIN;
 };
 
-const sendEmailVerificationCode = async ({ name, email }) => {
+const sendEmailVerificationCode = async (name: string, email: string) => {
     return new Promise(async (resolve, reject) => {
         try {
             let code = getRandomNumber();
@@ -24,7 +27,7 @@ const sendEmailVerificationCode = async ({ name, email }) => {
             } else {
                 await OtpModel.create(otp);
             }
-            emailVerification({ name, email, code });
+            emailVerification(name, email, code);
             resolve(code);
         } catch (err) {
             console.error(err);
@@ -33,7 +36,7 @@ const sendEmailVerificationCode = async ({ name, email }) => {
     });
 };
 
-const register = (async (req, res) => {
+export const register = (async (req: Req, res: Res) => {
     try {
         let user = new UserModel(req.body);
         user.email = user.email.toLowerCase();
@@ -47,7 +50,7 @@ const register = (async (req, res) => {
         } else {
             return res.status(400).send({ message: 'Email already registered' });
         }
-        await sendEmailVerificationCode(user);
+        await sendEmailVerificationCode(user.name, user.email);
         res.status(200).send({ message: 'Email Verification Code sent successfully' });
     } catch (err) {
         console.error(err);
@@ -55,11 +58,11 @@ const register = (async (req, res) => {
     }
 });
 
-const verifyEmail = (async (req, res) => {
+export const verifyEmail = (async (req: Req, res: Res) => {
     try {
-        let { email, code } = req.body;
+        let email: string = req.query.email as string;
+        let code: number = parseInt(req.query.code as string);
         email = email.toLowerCase();
-        code = parseInt(code);
         let otp = await OtpModel.findOne({ email });
         if (otp == null) {
             return res.status(400).send({ message: 'OTP not found' });
@@ -80,7 +83,7 @@ const verifyEmail = (async (req, res) => {
     }
 });
 
-const login = (async (req, res) => {
+export const login = (async (req: Req, res: Res) => {
     try {
         let { email, password } = req.body;
         let user = await UserModel.findOne({ email: email });
@@ -100,7 +103,7 @@ const login = (async (req, res) => {
     }
 });
 
-const logout = (async (req, res) => {
+export const logout = (async (req: Req, res: Res) => {
     try {
         res.clearCookie('accessToken').send({});
     } catch (err) {
@@ -109,14 +112,14 @@ const logout = (async (req, res) => {
     }
 });
 
-const profile = (async (req, res) => {
+export const profile = (async (req: Req, res: Res) => {
     try {
         let accessToken = req.cookies && req.cookies.accessToken;
         if (!accessToken && typeof (accessToken) == 'undefined') {
-            res.status(403).send({ err, message: 'No Access Token' });
+            res.status(403).send({ message: 'No Access Token' });
         }
         let decoded = await decodeToken(accessToken);
-        user = _.pick(decoded, ['id', 'name', 'email']);
+        let user = _.pick(decoded, ['id', 'name', 'email']);
         res.cookie('accessToken', accessToken, { maxAge: cookieExpiration, httpOnly: true });
         res.status(202).send({ user });
     } catch (err) {
@@ -124,11 +127,3 @@ const profile = (async (req, res) => {
         return res.status(500).send(INTERNAL_SERVER_ERROR);
     }
 });
-
-module.exports = {
-    register,
-    verifyEmail,
-    login,
-    profile,
-    logout
-};

@@ -1,6 +1,7 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
+import otpInterface from '../interfaces/otp.interface';
 
-const otp = new mongoose.Schema({
+const otp = new mongoose.Schema<otpInterface>({
     email: {
         type: String,
         max: 30,
@@ -19,4 +20,4 @@ const otp = new mongoose.Schema({
     }
 }).set('validateBeforeSave', true);
 
-module.exports = mongoose.model('Otp', otp);
+export default mongoose.model('Otp', otp);

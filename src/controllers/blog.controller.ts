@@ -1,15 +1,16 @@
-const _ = require('lodash');
-const ObjectId = require('mongodb').ObjectId;
-const BlogModel = require('../models/blog');
+import BlogModel from '../models/blog.model'
+import * as _ from 'lodash'
+import { Req, Res } from '../interfaces/global.interface'
+import { ObjectId } from 'mongodb'
 
-const { MAX_SNIPPET_LENGTH } = require('../../config');
-const { INTERNAL_SERVER_ERROR } = require('../utils/statusCodeResponses');
-const { PAGE_SIZE } = require('../utils/constants');
+import { MAX_SNIPPET_LENGTH } from '../config';
+import { INTERNAL_SERVER_ERROR } from '../utils/statusCodeResponses';
+import { PAGE_SIZE } from '../utils/constants';
 
-const getAllBlogs = (async (req, res) => {
+export const getAllBlogs = (async (req: Req, res: Res) => {
     try {
-        let page = req.query.page ? parseInt(req.query.page) : 0;
-        let blogs = await BlogModel.find({})
+        let page: number = req.query.page ? parseInt(req.query.page as string) : 0;
+        const blogs = await BlogModel.find()
             .limit(PAGE_SIZE)
             .skip(PAGE_SIZE * page)
             .sort({ updated_at: -1 });
@@ -20,7 +21,7 @@ const getAllBlogs = (async (req, res) => {
     }
 });
 
-const getBlogById = (async (req, res) => {
+export const getBlogById = (async (req: Req, res: Res) => {
     try {
         let id = req.params.id;
         let blog = await BlogModel.findOne({ _id: id }).populate('author');
@@ -31,10 +32,10 @@ const getBlogById = (async (req, res) => {
     }
 });
 
-const createBlog = (async (req, res) => {
+export const createBlog = (async (req: Req, res: Res) => {
     try {
         let blog = new BlogModel(req.body);
-        blog.author = ObjectId(req.user.id);
+        blog.author = new ObjectId(req.user.id);
         if (blog.content && !blog.snippet) {
             if (blog.content.length > MAX_SNIPPET_LENGTH) {
                 blog.snippet = `${blog.content.substring(0, MAX_SNIPPET_LENGTH - 3)}...`;
@@ -43,18 +44,22 @@ const createBlog = (async (req, res) => {
             }
         }
         await BlogModel.create(blog);
-        res.status(201).end();
+        return res.status(201).end();
     } catch (err) {
         console.error(err);
         return res.status(500).send(INTERNAL_SERVER_ERROR);
     }
 });
 
-const updateBlog = (async (req, res) => {
+export const updateBlog = (async (req: Req, res: Res) => {
     try {
         let userId = req.user.id;
         let blogId = req.params.id;
         let blog = await BlogModel.findOne({ _id: blogId });
+        console.log(userId)
+        console.log(typeof(userId))
+        console.log(blog.author)
+        console.log(typeof(blog.author))
         if (userId != (blog && blog.author)) return res.status(401).send({ msg: `OOP! You don't access to perform this action.` });
         blog = new BlogModel(req.body);
         if (blog.content && !blog.snippet) {
@@ -73,7 +78,7 @@ const updateBlog = (async (req, res) => {
     }
 });
 
-const deleteBlog = (async (req, res) => {
+export const deleteBlog = (async (req: Req, res: Res) => {
     try {
         let userId = req.user.id;
         let blogId = req.params.id;
@@ -86,11 +91,3 @@ const deleteBlog = (async (req, res) => {
         return res.status(500).send(INTERNAL_SERVER_ERROR);
     }
 });
-
-module.exports = {
-    getAllBlogs,
-    getBlogById,
-    createBlog,
-    updateBlog,
-    deleteBlog,
-};
