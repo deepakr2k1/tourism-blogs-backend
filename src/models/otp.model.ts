@@ -20,4 +20,4 @@ const otp = new mongoose.Schema<otpInterface>({
     }
 }).set('validateBeforeSave', true);
 
-export default mongoose.model('Otp', otp);
+export default mongoose.model('Otps', otp);

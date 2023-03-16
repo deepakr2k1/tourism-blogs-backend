@@ -1,17 +1,13 @@
-import UserModel from '../models/user.model';
-import OtpModel from '../models/otp.model';
 import bcrypt from 'bcrypt';
 import * as _ from 'lodash';
-
-import {Req, Res, Next} from '../interfaces/global.interface'
-
+import UserModel from '../models/user.model';
+import OtpModel from '../models/otp.model';
+import { Req, Res } from '../interfaces/global.interface'
 import { signToken, decodeToken } from '../utils/jwt';
-import emailVerification from '../mails/emailVerification';
-
-const cookieExpiration = process.env.COOKIE_EXPIRATION;
-const { HASH_SALT } = require('../config');
-const { SEND_CODE_MIN, SEND_CODE_MAX } = require('../utils/constants');
-const { INTERNAL_SERVER_ERROR } = require('../utils/statusCodeResponses');
+import { emailVerification } from '../mails/emailVerification';
+import { HASH_SALT, COOKIE_EXPIRATION } from '../config';
+import { SEND_CODE_MIN, SEND_CODE_MAX } from '../utils/constants';
+import { INTERNAL_SERVER_ERROR } from '../utils/statusCodeResponses';
 
 const getRandomNumber = () => {
     return Math.floor(Math.random() * (SEND_CODE_MAX - SEND_CODE_MIN + 1)) + SEND_CODE_MIN;
@@ -23,7 +19,7 @@ const sendEmailVerificationCode = async (name: string, email: string) => {
             let code = getRandomNumber();
             let otp = new OtpModel({ email, code });
             if (await OtpModel.exists({ email })) {
-                await OtpModel.updateOne({ email: otp.email }, { code: code });
+                await OtpModel.updateOne({ email: otp.email }, { code: code.toString() });
             } else {
                 await OtpModel.create(otp);
             }
@@ -75,7 +71,7 @@ export const verifyEmail = (async (req: Req, res: Res) => {
         user = await UserModel.findOne({ email: otp.email });
         user = _.pick(user, ['id', 'name', 'email']);
         let accessToken = await signToken(user);
-        res.cookie('accessToken', accessToken, { maxAge: cookieExpiration, httpOnly: true });
+        res.cookie('accessToken', accessToken, { maxAge: COOKIE_EXPIRATION, httpOnly: true });
         res.status(202).send({ user });
     } catch (err) {
         console.error(err);
@@ -95,7 +91,7 @@ export const login = (async (req: Req, res: Res) => {
         }
         let _user = _.pick(user, ['id', 'name', 'email']);
         let accessToken = await signToken(_user);
-        res.cookie('accessToken', accessToken, { maxAge: cookieExpiration, httpOnly: true });
+        res.cookie('accessToken', accessToken, { maxAge: COOKIE_EXPIRATION, httpOnly: true });
         res.status(202).send({ user: _user });
     } catch (err) {
         console.error(err);
@@ -120,7 +116,6 @@ export const profile = (async (req: Req, res: Res) => {
         }
         let decoded = await decodeToken(accessToken);
         let user = _.pick(decoded, ['id', 'name', 'email']);
-        res.cookie('accessToken', accessToken, { maxAge: cookieExpiration, httpOnly: true });
         res.status(202).send({ user });
     } catch (err) {
         console.error(err);

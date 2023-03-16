@@ -3,7 +3,7 @@ import ejs from 'ejs'
 import sendMail from './transporter';
 import mailOptionsInterface from '../interfaces/mailOptions.interface'
 
-const sendVerificationEmail = (name: string, email: string, code: number) => {
+export const emailVerification = (name: string, email: string, code: number) => {
     return new Promise(async (resolve, reject) => {
         try {
             let templatePath = path.join(__dirname, '../templates/emailVerification.ejs');
@@ -22,5 +22,3 @@ const sendVerificationEmail = (name: string, email: string, code: number) => {
         }
     });
 };
-
-export default sendVerificationEmail;

@@ -1,8 +1,7 @@
-import BlogModel from '../models/blog.model'
-import * as _ from 'lodash'
-import { Req, Res } from '../interfaces/global.interface'
-import { ObjectId } from 'mongodb'
-
+import { ObjectId } from 'mongodb';
+import * as _ from 'lodash';
+import BlogModel from '../models/blog.model';
+import { Req, Res } from '../interfaces/global.interface';
 import { MAX_SNIPPET_LENGTH } from '../config';
 import { INTERNAL_SERVER_ERROR } from '../utils/statusCodeResponses';
 import { PAGE_SIZE } from '../utils/constants';
