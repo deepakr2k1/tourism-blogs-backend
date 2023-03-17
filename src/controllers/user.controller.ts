@@ -2,7 +2,6 @@ import bcrypt from 'bcrypt';
 import * as _ from 'lodash';
 import UserModel from '../models/user.model';
 import OtpModel from '../models/otp.model';
-import { Req, Res } from '../interfaces/global.interface'
 import { signToken, decodeToken } from '../utils/jwt';
 import { emailVerification } from '../mails/emailVerification';
 import { HASH_SALT, COOKIE_EXPIRATION } from '../config';

@@ -8,21 +8,6 @@ import cors from 'cors';
 import rootRouter from './routes/root.route';
 import { CORS_ORIGIN_URLS } from './config';
 
-declare global {
-    namespace NodeJS {
-        interface ProcessEnv {
-            PORT?: number,
-            DB_URI: string,
-            ACCESS_TOKEN_EXPIRATION: number,
-            COOKIE_EXPIRATION: number,
-            ACCESS_SECRET_KEY: string,
-            SMTP_SERVICE?: string,
-            SMTP_USER?: string,
-            SMTP_PASSWORD?: string,
-        }
-    }
-}
-
 const app = express();
 const port = process.env.PORT;
 const dbURI = process.env.DB_URI;

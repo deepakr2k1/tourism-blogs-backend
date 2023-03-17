@@ -1,4 +1,3 @@
-import { Req, Res, Next } from '../interfaces/global.interface';
 import { decodeToken } from '../utils/jwt';
 import _ from 'lodash';
 
