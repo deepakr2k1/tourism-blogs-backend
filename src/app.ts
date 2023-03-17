@@ -1,9 +1,10 @@
+import dotenv from 'dotenv';
+dotenv.config();
 import express from 'express';
 import morgan from 'morgan';
 import mongoose from 'mongoose';
 import cookieParser from 'cookie-parser';
 import cors from 'cors';
-import dotenv from 'dotenv';
 import rootRouter from './routes/root.route';
 import { CORS_ORIGIN_URLS } from './config';
 
@@ -22,7 +23,6 @@ declare global {
     }
 }
 
-dotenv.config();
 const app = express();
 const port = process.env.PORT;
 const dbURI = process.env.DB_URI;

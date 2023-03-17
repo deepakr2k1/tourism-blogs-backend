@@ -1,5 +1,5 @@
 import nodemailer from 'nodemailer';
-import mailOptionsInterface from '../interfaces/mailOptions.interface'
+import mailOptionsInterface from '../interfaces/mailOptions.interface';
 const smtpService = process.env.SMTP_SERVICE;
 const smtpUser = process.env.SMTP_USER;
 const smtpPass = process.env.SMTP_PASSWORD;
