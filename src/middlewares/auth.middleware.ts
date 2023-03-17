@@ -1,7 +1,7 @@
 import { decodeToken } from '../utils/jwt';
 import _ from 'lodash';
 
-const auth = async (req: Req, res: Res, next: Next) => {
+const auth = async (req: Req, res: Res, next: Next): Promise<void | Res> => {
     try {
         let accessToken = req.cookies && req.cookies.accessToken;
         if (!accessToken) {
