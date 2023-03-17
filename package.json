@@ -4,10 +4,12 @@
     "description": "",
     "main": "app.js",
     "scripts": {
-        "dev:ts": "tsc -w",
-        "dev:js": "nodemon build/app.js",
+        "dev:WatchTSChanges": "tsc -w",
+        "dev:copyTemplates": "copyfiles --error --up 1 src/templates/*.ejs* build",
+        "dev:runApp": "nodemon build/app.js",
         "dev": "concurrently npm:dev:*",
         "build": "tsc -p .",
+        "copyTemplates": "copyfiles --error --up 1 src/templates/*.ejs* build",
         "start": "node build/app.js"
     },
     "author": "",
@@ -15,6 +17,7 @@
     "dependencies": {
         "bcrypt": "^5.1.0",
         "cookie-parser": "^1.4.6",
+        "copyfiles": "^2.4.1",
         "cors": "^2.8.5",
         "dotenv": "^16.0.3",
         "ejs": "^3.1.9",
