@@ -18,7 +18,7 @@ const blogSchema = new mongoose.Schema<blogInterface>({
     },
     author: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Users',
+        ref: 'users',
         required: true,
     }
 }, {
@@ -28,4 +28,4 @@ const blogSchema = new mongoose.Schema<blogInterface>({
     }
 }).set('validateBeforeSave', true);;
 
-export default mongoose.model('Blogs', blogSchema);
+export default mongoose.model('blogs', blogSchema);

@@ -30,4 +30,4 @@ const userSchema = new mongoose.Schema<userInterface>({
     }
 }).set('validateBeforeSave', true);
 
-export default mongoose.model('Users', userSchema);
+export default mongoose.model('users', userSchema);
