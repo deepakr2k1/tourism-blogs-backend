@@ -7,12 +7,18 @@ export const emailVerification = (name: string, email: string, code: number) => 
     return new Promise(async (resolve, reject) => {
         try {
             let templatePath = path.join(__dirname, '../templates/emailVerification.ejs');
+            let imagePath = path.join(__dirname, '../assets/world_tourism.jpg');
             let template = await ejs.renderFile(templatePath, { code });
             let message: messageInterface = {
                 from: 'Tourism Blogs',
                 to: email,
                 subject: `Welcome ${name}, Please verify your email`,
-                html: template
+                html: template,
+                attachments: [{
+                    filename: 'world_tourism.jpg',
+                    path: imagePath,
+                    cid: 'world_tourism@nodemailer.com'
+                }]
             };
             await sendMail(message);
             resolve('EMAIL_SENT');

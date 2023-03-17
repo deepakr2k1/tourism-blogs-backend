@@ -5,11 +5,11 @@
     "main": "app.js",
     "scripts": {
         "dev:WatchTSChanges": "tsc -w",
-        "dev:copyTemplates": "copyfiles --error --up 1 src/templates/*.ejs* build",
+        "dev:copyTemplates": "copyfiles --error --up 1 src/templates/*.ejs* src/assets/* build",
         "dev:runApp": "nodemon build/app.js",
         "dev": "concurrently npm:dev:*",
         "build": "tsc -p .",
-        "copyTemplates": "copyfiles --error --up 1 src/templates/*.ejs* build",
+        "copyTemplates": "copyfiles --error --up 1 src/templates/*.ejs* src/assets/* build",
         "start": "node build/app.js"
     },
     "author": "",
