@@ -4,4 +4,5 @@ export const CORS_ORIGIN_URLS: string[] = [
 export const HASH_SALT: number =  10;
 export const ACCESS_TOKEN_EXPIRATION: number = 604800000;
 export const COOKIE_EXPIRATION: number = 604800000;
+export const DEFAULT_CACHE_EXPIRATION: number = 3600;
 export const MAX_SNIPPET_LENGTH: number = 100;

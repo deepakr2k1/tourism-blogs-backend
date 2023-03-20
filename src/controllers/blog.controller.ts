@@ -4,6 +4,8 @@ import BlogModel from '../models/blog.model';
 import { MAX_SNIPPET_LENGTH } from '../config';
 import { INTERNAL_SERVER_ERROR } from '../utils/statusCodeResponses';
 import { PAGE_SIZE } from '../utils/constants';
+import { cacheAllBlogs, clearAllBlogsCache } from '../cache/listBlogs.cache';
+import { cacheBlog, deleteBlogCache } from '../cache/blog.cache';
 
 export const getAllBlogs = (async (req: Req, res: Res): Promise<Res> => {
     try {
@@ -12,6 +14,7 @@ export const getAllBlogs = (async (req: Req, res: Res): Promise<Res> => {
             .limit(PAGE_SIZE)
             .skip(PAGE_SIZE * page)
             .sort({ updated_at: -1 });
+        cacheAllBlogs(page, blogs);
         return res.status(200).json({ blogs });
     } catch (err) {
         console.error(err);
@@ -23,6 +26,7 @@ export const getBlogById = (async (req: Req, res: Res): Promise<Res> => {
     try {
         let id = req.params.id;
         let blog = await BlogModel.findOne({ _id: id }).populate('author');
+        cacheBlog(id, blog);
         return res.status(200).json(blog);
     } catch (err) {
         console.error(err);
@@ -41,7 +45,9 @@ export const createBlog = (async (req: Req, res: Res): Promise<Res> => {
                 blog.snippet = blog.content;
             }
         }
-        await BlogModel.create(blog);
+        let { blogId } = await BlogModel.create(blog);
+        clearAllBlogsCache();
+        cacheBlog(blogId, blog);
         return res.status(201).end();
     } catch (err) {
         console.error(err);
@@ -71,6 +77,8 @@ export const updateBlog = (async (req: Req, res: Res): Promise<Res> => {
         }
         blog = _.pick(blog, ['title', 'content', 'snippet']);
         await BlogModel.updateOne({ _id: blogId }, blog);
+        clearAllBlogsCache();
+        cacheBlog(blogId, blog);
         return res.status(201).end();
     } catch (err) {
         console.error(err);
@@ -87,6 +95,8 @@ export const deleteBlog = (async (req: Req, res: Res): Promise<Res> => {
             return res.status(401).json({ msg: `OOP! You don't access to perform this action.` });
         }
         await BlogModel.deleteOne({ _id: blogId, author: userId });
+        clearAllBlogsCache();
+        deleteBlogCache(blogId);
         return res.status(204).end();
     } catch (err) {
         console.error(err);
