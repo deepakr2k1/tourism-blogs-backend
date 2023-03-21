@@ -1,6 +1,14 @@
+import { RedisClientOptions } from 'redis';
+
 export const CORS_ORIGIN_URLS: string[] = [
     `http://localhost:3000`
 ];
+
+export const redisCacheOptions = {
+    host: 'localhost',
+    port: 6378
+} as RedisClientOptions;
+
 export const HASH_SALT: number =  10;
 export const ACCESS_TOKEN_EXPIRATION: number = 604800000;
 export const COOKIE_EXPIRATION: number = 604800000;
