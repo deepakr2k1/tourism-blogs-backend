@@ -6,12 +6,12 @@ import mongoose from 'mongoose';
 import cookieParser from 'cookie-parser';
 import cors from 'cors';
 import rootRouter from './routes/root.route';
-import { CORS_ORIGIN_URLS } from './config';
+import { ALLOWED_ORIGINS } from './config';
 
 const app = express();
 const port = process.env.PORT;
 const dbURI = process.env.DB_URI;
-const options: cors.CorsOptions = { origin: CORS_ORIGIN_URLS };
+const options: cors.CorsOptions = { origin: ALLOWED_ORIGINS, credentials: true };
 
 // Connect to MongoDB
 mongoose.connect(dbURI, { useNewUrlParser: true, useUnifiedTopology: true })

@@ -47,7 +47,7 @@ export const createBlog = (async (req: Req, res: Res): Promise<Res> => {
         }
         let { _id  } = await BlogModel.create(blog);
         clearBlogsListCache();
-        cacheBlog(_id, blog);
+        deleteBlogCache(_id);
         return res.status(201).end();
     } catch (err) {
         console.error(err);
@@ -74,7 +74,7 @@ export const updateBlog = (async (req: Req, res: Res): Promise<Res> => {
         blog = _.pick(blog, ['title', 'content', 'snippet']);
         await BlogModel.updateOne({ _id: blogId }, blog);
         clearBlogsListCache();
-        cacheBlog(blogId, blog);
+        deleteBlogCache(blogId);
         return res.status(201).end();
     } catch (err) {
         console.error(err);

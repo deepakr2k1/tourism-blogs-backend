@@ -5,7 +5,7 @@ const auth = async (req: Req, res: Res, next: Next): Promise<void | Res> => {
     try {
         let accessToken = req.cookies && req.cookies.accessToken;
         if (!accessToken) {
-            res.status(403).send({ message: 'No Access Token' });
+            return res.status(403).send({ message: 'No Access Token' });
         }
         let decoded = await decodeToken(accessToken);
         req.user = _.pick(decoded, ['id', 'name', 'email']);

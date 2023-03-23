@@ -1,6 +1,6 @@
 import { RedisClientOptions } from 'redis';
 
-export const CORS_ORIGIN_URLS: string[] = [
+export const ALLOWED_ORIGINS: string[] = [
     `http://localhost:3000`
 ];
 
