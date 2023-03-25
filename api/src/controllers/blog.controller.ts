@@ -13,7 +13,7 @@ export const getAllBlogs = (async (req: Req, res: Res): Promise<Res> => {
         const blogs = await BlogModel.find()
             .limit(PAGE_SIZE)
             .skip(PAGE_SIZE * page)
-            .sort({ updated_at: -1 });
+            .sort({ updatedAt: -1 });
         cacheBlogsList(page, blogs);
         return res.status(200).json({ blogs });
     } catch (err) {

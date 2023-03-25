@@ -4,7 +4,7 @@ import UserModel from '../models/user.model';
 import OtpModel from '../models/otp.model';
 import { signToken, decodeToken } from '../utils/jwt';
 import { publishSendEmailVerificationJob } from '../publishJob';
-import { HASH_SALT, COOKIE_EXPIRATION } from '../config';
+import { HASH_SALT, COOKIE_EXPIRATION, OTP_AGE } from '../config';
 import { SEND_CODE_MIN, SEND_CODE_MAX } from '../utils/constants';
 import { INTERNAL_SERVER_ERROR } from '../utils/statusCodeResponses';
 
@@ -58,9 +58,9 @@ export const verifyEmail = (async (req: Req, res: Res): Promise<Res> => {
         let email: string = req.query.email as string;
         let code: number = parseInt(req.query.code as string);
         email = email.toLowerCase();
-        let otp = await OtpModel.findOne({ email });
+        let otp = await OtpModel.findOne({ email, updatedAt: { $gte: new Date(Date.now() - OTP_AGE)} });
         if (otp == null) {
-            return res.status(400).json({ message: 'OTP not found' });
+            return res.status(400).json({ message: 'OTP is either expired or not generated' });
         } else if (otp.code != code) {
             return res.status(400).json({ message: 'Incorrect OTP' });
         }

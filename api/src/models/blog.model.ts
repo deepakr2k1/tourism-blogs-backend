@@ -22,10 +22,7 @@ const blogSchema = new mongoose.Schema<blogInterface>({
         required: true,
     }
 }, {
-    timestamps: {
-        createdAt: 'created_at',
-        updatedAt: 'updated_at'
-    }
+    timestamps: true
 }).set('validateBeforeSave', true);;
 
 export default mongoose.model('blogs', blogSchema);

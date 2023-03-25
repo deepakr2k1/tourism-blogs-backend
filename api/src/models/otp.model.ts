@@ -12,12 +12,10 @@ const otp = new mongoose.Schema<otpInterface>({
         min: 100000,
         max: 999999,
         required: true,
+        expires: 60
     }
 }, {
-    timestamps: {
-        createdAt: 'created_at',
-        updatedAt: 'updated_at'
-    }
+    timestamps: true
 }).set('validateBeforeSave', true);
 
 export default mongoose.model('otps', otp);

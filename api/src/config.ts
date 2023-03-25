@@ -10,6 +10,7 @@ export const redisCacheOptions = {
 } as RedisClientOptions;
 
 export const HASH_SALT: number =  10;
+export const OTP_AGE: number =  30 * 60 * 1000;
 export const ACCESS_TOKEN_EXPIRATION: number = 604800000;
 export const COOKIE_EXPIRATION: number = 604800000;
 export const DEFAULT_CACHE_EXPIRATION: number = 3600;

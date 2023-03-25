@@ -24,10 +24,7 @@ const userSchema = new mongoose.Schema<userInterface>({
         default: "UNVERIFIED"
     }
 }, {
-    timestamps: {
-        createdAt: 'created_at',
-        updatedAt: 'updated_at'
-    }
+    timestamps: true
 }).set('validateBeforeSave', true);
 
 export default mongoose.model('users', userSchema);
