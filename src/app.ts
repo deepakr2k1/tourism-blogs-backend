@@ -7,6 +7,7 @@ import cookieParser from 'cookie-parser';
 import cors from 'cors';
 import rootRouter from './routes/root.route';
 import { ALLOWED_ORIGINS } from './config';
+import './publishJob'
 
 const app = express();
 const port = process.env.PORT;

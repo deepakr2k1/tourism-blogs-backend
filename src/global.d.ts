@@ -8,9 +8,7 @@ declare global {
             ACCESS_TOKEN_EXPIRATION: number,
             COOKIE_EXPIRATION: number,
             ACCESS_SECRET_KEY: string,
-            SMTP_SERVICE?: string,
-            SMTP_USER?: string,
-            SMTP_PASSWORD?: string,
+            RABBITMQ_SERVER: string
         }
     }
     interface Req extends Request {

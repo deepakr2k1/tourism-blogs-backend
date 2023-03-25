@@ -3,7 +3,7 @@ import * as _ from 'lodash';
 import UserModel from '../models/user.model';
 import OtpModel from '../models/otp.model';
 import { signToken, decodeToken } from '../utils/jwt';
-import { emailVerification } from '../mails/emailVerification';
+import { publishSendEmailVerificationJob } from '../publishJob';
 import { HASH_SALT, COOKIE_EXPIRATION } from '../config';
 import { SEND_CODE_MIN, SEND_CODE_MAX } from '../utils/constants';
 import { INTERNAL_SERVER_ERROR } from '../utils/statusCodeResponses';
@@ -22,7 +22,7 @@ const sendEmailVerificationCode = async (name: string, email: string): Promise<a
             } else {
                 await OtpModel.create(otp);
             }
-            emailVerification(name, email, code);
+            publishSendEmailVerificationJob(name, email, code);
             resolve(code);
         } catch (err) {
             console.error(err);
